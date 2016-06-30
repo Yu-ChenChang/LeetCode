@@ -9,8 +9,8 @@ public:
 		board[i][j] = 'O';
 		if(i>0 && board[i-1][j]=='-') round_to_O(board,i-1,j);
 		if(j>0 && board[i][j-1]=='-') round_to_O(board,i,j-1);
-		if(j<board[0].size()-1 && board[i][j+1]=='-') round_to_o(board,i,j+1);
-		if(i<board.size()-1 && board[i+1][j]=='-') round_to_o(board,i+1,j);
+		if(j<board[0].size()-1 && board[i][j+1]=='-') round_to_O(board,i,j+1);
+		if(i<board.size()-1 && board[i+1][j]=='-') round_to_O(board,i+1,j);
 	}
     void solve(vector<vector<char> >& board) {
 		if(board.empty()) return;
