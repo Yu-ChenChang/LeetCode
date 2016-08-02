@@ -3,9 +3,11 @@ CFLAGS=-g -Wno-logical-op-parentheses
 
 SRCS = $(wildcard *.cpp)
 
-PROGS = $(patsubst %.cpp,%,$(SRCS))
+PROGS = $(patsubst %.cpp,$(BIN)/%,$(SRCS))
+
+BIN = ../bin
 
 all: $(PROGS)
 
-%: %.cpp
-	 $(CC) $(CFLAGS) -o ../bin/$@ $<
+$(BIN)/%: %.cpp
+	 $(CC) $(CFLAGS) -o $@ $<
