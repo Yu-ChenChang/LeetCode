@@ -7,6 +7,31 @@ using namespace::std;
 class Solution {
 public:
     int maximalRectangle(vector<vector<char> >& matrix) {
+        if(matrix.empty()) return 0;
+		int m = matrix.size();
+		int n = matrix[0].size();
+		vector<vector<int> > dp(m,vector<int>(n,0));
+		for(int j=0;j<n;j++)
+			dp[0][j] = matrix[0][j]=='1';
+		for(int i=1;i<m;i++)
+			for(int j=0;j<n;j++)
+				dp[i][j] = matrix[i][j]=='0'?0:dp[i-1][j]+1;
+
+		int maximum = 0;
+		for(int i=0;i<m;i++)
+			for(int j=0;j<n;j++)
+			{
+				int width = dp[i][j];
+				for(int k=j;k>=0;k--)
+				{
+					width = min(width,dp[i][k]);
+					maximum = max(maximum,(j-k+1)*width);
+				}
+			}
+		return maximum;
+    }
+
+    int maximalRectangle_opt(vector<vector<char> >& matrix) {
 		if(matrix.empty()) return 0;
 
 		int result = 0;
@@ -35,7 +60,7 @@ public:
 
 int main(){
 	Solution sol;
-	vector<char> row(1,'1');
+	vector<char> row(2,'1');
 	vector<vector<char> >matrix(1,row);
 	cout<<sol.maximalRectangle(matrix)<<endl;
 }
