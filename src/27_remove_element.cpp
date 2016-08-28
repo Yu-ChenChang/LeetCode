@@ -1,17 +1,21 @@
+#include<vector>
 class Solution {
 public:
-    int removeElement(int A[], int n, int elem) {
-        int length=0;
-        int pos=0;
-        for(int i=0;i<n;i++){
-            if(A[i]!=elem){
-                A[pos] = A[i];
-                pos++;
-                length++;
-            }
-        }
-        return length;
-    }
+	int removeElement(std::vector<int>& nums, int val) {
+		if(nums.empty()) return 0;
+		int pos = 0;
+		
+		for(int i=0;i<nums.size();i++)
+		{
+			if(nums[i]!=val)
+			{
+				int tmp = nums[i];
+				nums[i] = nums[pos];
+				nums[pos++] = tmp;
+			}
+		}
+		return pos;
+	}
 };
 
 int main(){

@@ -3,7 +3,7 @@
 
 class Solution {
 public:
-	int removeDuplicates(vector<int>& nums) {
+	int removeDuplicates(std::vector<int>& nums) {
 		if(nums.empty()) return 0;
 		int pos = 1;
 		int curNum = nums[0];
