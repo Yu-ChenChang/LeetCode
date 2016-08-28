@@ -1,19 +1,23 @@
+#include<iostream>
+#include<vector>
+
 class Solution {
 public:
-    int removeDuplicates(int A[], int n) {
-		int pos=0;
-		int curNum=0;
-		int length=0;
-		for(int i=0;i<n;i++){
-			if(A[i]>curNum||i==0){
-				A[pos] = A[i];
-				pos++;
-				curNum = A[i];
-				length++;
+	int removeDuplicates(vector<int>& nums) {
+		if(nums.empty()) return 0;
+		int pos = 1;
+		int curNum = nums[0];
+		for(int i=1;i<nums.size();i++)
+		{
+			if(nums[i]>curNum)
+			{
+				curNum = nums[i];
+				nums[i] = nums[pos];
+				nums[pos++] = curNum;
 			}
 		}
-		return length;
-    }
+		return pos;
+	}
 };
 int main(){
 
