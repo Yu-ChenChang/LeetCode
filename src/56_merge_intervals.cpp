@@ -1,46 +1,45 @@
 #include<iostream>
+#include<string>
 #include<vector>
-#include<map>
+#include<queue>
 using namespace::std;
 /**
  * Definition for an interval.
- */
- struct Interval {
-     int start;
-     int end;
-     Interval() : start(0), end(0) {}
-     Interval(int s, int e) : start(s), end(e) {}
- };
+ **/
+struct Interval {
+    int start;
+    int end;
+    Interval() : start(0), end(0) {}
+    Interval(int s, int e) : start(s), end(e) {}
+};
+
+struct compare{
+	bool operator()(Interval& lhs, Interval& rhs) const
+	{
+		return lhs.start<rhs.start;
+	}
+};
+
 class Solution {
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
-		vector<Interval> res;
-		if(intervals.empty()) return res;
-		map<int,int> omap;
-		for(int i=0;i<intervals.size();i++)
+		if(intervals.empty()) return vector<Interval>();
+		sort(intervals.begin(),intervals.end(),compare());
+		vector<Interval> res(1,intervals[0]);
+		for(int i=1;i<intervals.size();i++)
 		{
-			if(omap[intervals[i].start] < intervals[i].end)
-				omap[intervals[i].start] = intervals[i].end;
-		}
-		for(map<int,int>::iterator it=omap.begin();it!=omap.end();it++)
-		{
-			map<int,int>::iterator move = it;
-			for(map<int,int>::iterator it2=it;it2!=omap.end();it2++)
+			if(intervals[i].start<=res.back().end)
 			{
-				if(it==it2) continue;
-				if(it->second >= it2->first)
+				if(intervals[i].end>res.back().end)
 				{
-					if(it->second < it2->second)
-						it->second = it2->second;
-					move++;
+					Interval combined(res.back().start, intervals[i].end);
+					res.pop_back();
+					res.push_back(combined);
 				}
-				else
-					break;
-			}
-			res.push_back(Interval(it->first,it->second));
-			it = move;
+			}else
+				res.push_back(intervals[i]);
+			
 		}
-
 		return res;
     }
 };

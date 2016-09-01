@@ -5,34 +5,27 @@ using namespace::std;
 class Solution {
 public:
     vector<vector<int> > generateMatrix(int n) {
-    	vector<vector<int> >res;
-		vector<int> row(n,0);
-		for(int i=0;i<n;i++) res.push_back(row);
-		
-		int startR=0,startC=0;
-		int endR = n-1, endC = n-1;
-		int num = 0;
-		while(startR<=endR && startC<=endC)
+		vector<vector<int > > res(n,vector<int>(n,0));
+		int num = 1;
+		int i=0;
+		int j=0;
+		int cn=n;
+		while(cn>1)
 		{
-			for(int col = startC;col<=endC;col++)
-				res[startR][col] = ++num;
-			startR++;
-			for(int row = startR;row<=endR;row++)
-				res[row][endC] = ++num;
-			endC--;
-			if(startR<=endR)
-			{
-				for(int col = endC;col>=startC;col--)
-					res[endR][col] = ++num;
-				endR--;
-			}
-			if(startC<=endC)
-			{
-				for(int row = endR;row>=startR;row--)
-					res[row][startC] = ++num;
-				startC++;
-			}
+			for(int k=0;k<cn-1;k++)
+				res[i][j++] = num++;
+			for(int k=0;k<cn-1;k++)
+				res[i++][j] = num++;
+			for(int k=0;k<cn-1;k++)
+				res[i][j--] = num++;
+			for(int k=0;k<cn-1;k++)
+				res[i--][j] = num++;
+			//update parameter
+			i++;
+			j++;
+			cn-=2;
 		}
+		if(cn==1) res[i][j] = num++;
 		return res;
     }
 };
