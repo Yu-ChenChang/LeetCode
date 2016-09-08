@@ -6,25 +6,17 @@ using namespace::std;
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-		if(nums.empty()) return 0;
-		int fill=1;
-		int count=1;
-		for(int i=1;i<nums.size();i++)
+		int n = nums.size();        
+		if(n<3) return n;
+		int end = 2;
+		for(int i=2;i<n;i++)
 		{
-			if(nums[i]==nums[fill-1])
+			if(nums[i]!=nums[end-2])
 			{
-				if(count==2)
-					continue;
-				nums[fill++] = nums[i];
-				count++;
-			}
-			else
-			{
-				nums[fill++] = nums[i];
-				count=1;
+				swap(nums[i],nums[end++]);
 			}
 		}
-		return fill;
+		return end;
     }
 };
 

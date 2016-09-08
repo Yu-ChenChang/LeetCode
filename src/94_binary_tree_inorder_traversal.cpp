@@ -2,6 +2,7 @@
 #include<string>
 #include<iostream>
 #include<unordered_map>
+#include<stack>
 using namespace::std;
 
 /**
@@ -18,31 +19,31 @@ class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
 		vector<int> res;
-		if(root==NULL) return res;
-		unordered_map<TreeNode*,bool> leftChildStatus;
-		vector<TreeNode*> nodeList;
-		TreeNode* ptr = root;
-
-		while(true)
-		{
-			if(leftChildStatus[ptr]==0 && ptr->left!=NULL)
-			{
-				nodeList.push_back(ptr);
-				ptr = ptr->left;
+		if(!root) return res;
+		unordered_map<TreeNode*, bool> umap;
+		TreeNode* ptr = NULL;
+		stack<TreeNode*> st;
+		st.push(root);
+		while(!st.empty()){
+			ptr = st.top();
+			st.pop();
+			if(umap[ptr]){
+				res.push_back(ptr->val);
 				continue;
 			}
-			res.push_back(ptr->val);
-			if(ptr->right!=NULL) ptr = ptr->right;
-			else
-			{
-				if(nodeList.empty()) break;
-				ptr = nodeList.back();
-				nodeList.pop_back();
-				leftChildStatus[ptr] = 1;
+			if(ptr->right){
+				st.push(ptr->right);
 			}
-
+			if(ptr->left){
+				umap[ptr] = true;
+				st.push(ptr);
+				st.push(ptr->left);
+			}
+			else{
+				res.push_back(ptr->val);
+			}
 		}
-		return res;
+       	return res; 
     }
 };
 
