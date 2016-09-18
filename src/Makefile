@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-g -Wno-logical-op-parentheses
+CFLAGS=-std=c++0x -g -Wno-logical-op-parentheses
 
 SRCS = $(wildcard *.cpp)
 
