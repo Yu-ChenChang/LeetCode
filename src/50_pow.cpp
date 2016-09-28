@@ -4,29 +4,28 @@ using namespace::std;
 
 class Solution {
 public:
-    double myPow(double x, int n) {
+	double myPow(double x, int n) {
 		unordered_map<int,double> umap;
-		bool sign = n>0?1:0;
-		n = abs(n);
-		int pow=1;
-		double res=1;
-		for(pow=1;pow<<1 <=n && pow<<1>0;pow<<=1)
-		{
-			umap[pow] = x;
-			x *=x;
+		bool negn = (n<0);
+		if(n>0) n = -n;
+		double res = 1;
+		int pow = -1;
+		double num = x;
+		umap[pow] = num;
+		while(pow>n&&pow>=INT_MIN/2){
+			pow *= 2;
+			num *= num;
+			umap[pow] = num;
 		}
-		umap[pow] = x;
-		while(pow>0&&n>0)
-		{
-			if(pow<=n)
-			{
-				res *= umap[pow];
-				n -= pow;
+		while(n<0){
+			while(n<=pow){
+				n-=pow;
+				res*=umap[pow];
 			}
-			pow/=2;
+			pow /= 2;
 		}
-		return sign>0?res:1/res;
-    }
+		return negn?1/res:res;
+	}
 };
 
 int main(){

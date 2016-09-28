@@ -4,35 +4,25 @@ using namespace::std;
 class Solution {
 public:
     bool isValid(string s) {
-		string left;
-		int len=0;
-       	for(int i=0;i<s.size();i++){
-			if(s[i]=='('||s[i]=='['||s[i]=='{'){
-				left+=s[i];
-				len++;
-			}
-			else{
-				if(left[len-1]=='('&&s[i]==')'){
-					left.erase(len-1);
-					len--;
-				}
-				else if(left[len-1]=='['&&s[i]==']'){
-					left.erase(len-1);
-					len--;
-				}
-				else if(left[len-1]=='{'&&s[i]=='}'){
-					left.erase(len-1);
-					len--;
-				}
-				else{
-					return 0;
-				}
-			}
-		} 
-		if(!left.empty())
-			return 0;	
-		else 
-			return 1;
+        string res;
+        for(int i=0;i<s.size();i++){
+            if(s[i]=='('||s[i]=='['||s[i]=='{'){
+                res+=s[i];
+            }
+            else{
+                if(s[i]==')'){
+                    if(res.back()!='(') return false;
+                }
+                if(s[i]==']'){
+                    if(res.back()!='[') return false;
+                }
+                if(s[i]=='}'){
+                    if(res.back()!='{') return false;
+                }
+                res.pop_back();
+            }
+        }
+        return res.empty();
     }
 };
 

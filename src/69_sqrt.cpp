@@ -4,18 +4,14 @@ using namespace::std;
 class Solution {
 public:
 	int mySqrt(int x) {
-		if(x<0||x==0) return 0;
-		int max = 46340;
-		int min = 0;
-		int mid;
-		while(max>min+1)
-		{
-			mid = (max+min)/2;
-			if(mid*mid>x || mid*mid<0) max = mid;
-			else if(mid*mid<x) min = mid;
-			else return mid;
+		int left = 0, right = x;
+		while(left<right){
+			int mid = (left+right)>>1;
+			if(mid*mid==x) return mid;
+			else if(mid!=0&&mid>INT_MAX/mid || mid*mid>x) right = mid-1;
+			else left = mid+1;
 		}
-		return max*max<=x?max:min;
+		return left*left>x?left-1:left;
 	}
 };
 

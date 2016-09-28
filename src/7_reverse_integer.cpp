@@ -8,17 +8,15 @@ class Solution {
 public:
     int reverse(int x)
 	{
-        int value = x>0?x:-x;
-        int res = 0;
-        while(value>0)
-        {
-            if(res>INT_MAX/10) return 0;
-            res *= 10;
-            if(res>INT_MAX-value%10) return 0;
-            res += value%10;
-            value /= 10;
+        bool sign = (x>=0);
+        if(x<0) x=-x;
+        int res=0;
+        while(x>0){
+            if(res>(INT_MAX-x%10)/10) return 0;
+            res = res*10+x%10;
+            x /= 10;
         }
-        return x>0?res:-res;
+        return sign?res:-res;
     }
 };
 

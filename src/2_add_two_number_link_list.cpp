@@ -42,54 +42,32 @@ ListNode *addTwoNumbers_recursive_version(ListNode *l1, ListNode *l2) {
 	}
 }
 ListNode *addTwoNumbers_loop_version(ListNode *l1, ListNode *l2) {
-	ListNode* res = NULL;
-	ListNode* cur = NULL;
+	if(!l1) return l2;
+	if(!l2) return l1;
+	ListNode dummy(0);
+	ListNode* head = &dummy;
 	int carry = 0;
-	while(l1!=NULL || l2!=NULL)
-	{
-		if(res==NULL)
-		{
-			res = new ListNode(carry);
-			cur = res;
-		}
-		else
-		{
-			cur->next = new ListNode(carry);
-			cur = cur->next;
-		}
-		
-		if(l1!=NULL)
-		{
-			cur->val += l1->val;
+	while(l1 || l2){
+		int total = carry;
+		if(l1){ 
+			total += l1->val;
 			l1 = l1->next;
 		}
-		if(l2!=NULL)
-		{
-			cur->val += l2->val;
+		if(l2){
+			total += l2->val;
 			l2 = l2->next;
 		}
-
-		carry = cur->val/10;
-		cur->val %=10;
+		carry = total/10;
+		ListNode* ptr = new ListNode(total%10);
+		head->next = ptr;
+		head = head->next;
 	}
-	return res;
-}
-
-void construct_list(ListNode* l,int integer){
-	ListNode* newN = new ListNode(integer);
-	l->next = newN;
+	if(carry){
+		ListNode* ptr = new ListNode(carry);
+		head->next = ptr;
+	}
+	return dummy.next;
 }
 
 int main(){
-	ListNode* answer = new ListNode(0);
-	ListNode* l1 = new ListNode(5);
-	ListNode* l2 = new ListNode(6);
-	construct_list(l1,1);
-	answer->next = addTwoNumbers_loop_version(l1,l2);
-	
-	for(ListNode* it = answer->next;it!=NULL;){
-		cout<<it->val<<" ";
-		it = it->next;
-	}
-	cout<<endl;
 }
