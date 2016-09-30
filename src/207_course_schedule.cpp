@@ -6,28 +6,34 @@ using namespace::std;
 
 class Solution {
 public:
-	bool canFinish(int numCourses, vector<vector<int> >& prerequisites) {
-		vector<vector<int> > graph(numCourses, vector<int>(0));
-		vector<int> visit(numCourses, 0);
-		for (auto a : prerequisites) {
-			graph[a[1]].push_back(a[0]);
+    bool canFinish(int numCourses, vector<pair<int, int> >& prerequisites) {
+		unordered_map<int, int> premap;//<node id, number of prereq>
+		for(int i=0;i<numCourses;i++) premap[i] = 0;
+		unordered_map<int, vector<int> > folmap; // <node id, all other nodes that take this node as prereq>
+		for(int i=0;i<prerequisites.size();i++){
+			premap[prerequisites[i].first]++;
+			folmap[prerequisites[i].second].push_back(prerequisites[i].first);
 		}
-		for (int i = 0; i < numCourses; ++i) {
-			if (!canFinishDFS(graph, visit, i)) return false;
+		helper(numCourses,prerequisites,premap,folmap);
+		return (!numCourses);
+    }
+	void helper(int& numCourses, vector<pair<int, int> >& prerequisites,unordered_map<int, int>& premap,unordered_map<int,vector<int> >& folmap){
+		unordered_map<int,int>::iterator it=premap.begin();
+		while(it!=premap.end()){
+			if(it->second!=0) it++;
+			else{
+				numCourses--;
+				int curnode = it->first;
+				premap.erase(it);
+				it = premap.begin();
+				for(int i=0;i<folmap[curnode].size();i++){
+					premap[folmap[curnode][i]]--;
+				}
+			}
 		}
-		return true;
-	}
-	bool canFinishDFS(vector<vector<int> > &graph, vector<int> &visit, int i) {
-		if (visit[i] == -1) return false;
-		if (visit[i] == 1) return true;
-		visit[i] = -1;
-		for (auto a : graph[i]) {
-			if (!canFinishDFS(graph, visit, a)) return false;
-		}
-		visit[i] = 1;
-		return true;
 	}
 };
+
 int main(){
 
 }
