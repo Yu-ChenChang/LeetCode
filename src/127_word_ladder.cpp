@@ -5,22 +5,20 @@
 #include<unordered_set>
 #include<queue>
 #include<array>
+#include<utility>
 using namespace::std;
 
 class Solution {
 public:
 	int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
 		if(wordList.empty()) return 0;
-		queue<string> bfsQueue;
-		queue<int> disQueue;
+		queue<pair<string,int> > bfsQueue; //<word,distance>
 		int n = beginWord.size();
-		bfsQueue.push(beginWord);
-		disQueue.push(2);
+		bfsQueue.push(pair<string,int>(beginWord,2));
 		while(!bfsQueue.empty())
 		{
-			int dis = disQueue.front();
-			disQueue.pop();
-			string cur = bfsQueue.front();
+			int dis = bfsQueue.front().second;
+			string cur = bfsQueue.front().first;
 			bfsQueue.pop();
 			for(int i=0;i<n;i++)
 			{
@@ -30,12 +28,10 @@ public:
 					cur[i] = c;
 					if(endWord==cur) return dis;
 
-					unordered_set<string>::iterator it = wordList.find(cur);
-					if(it!=wordList.end())
+					if(wordList.find(cur)!=wordList.end())
 					{
-						bfsQueue.push(*it);
-						disQueue.push(dis+1);
-						wordList.erase(it);
+						bfsQueue.push(pair<string,int>(cur,dis+1));
+						wordList.erase(cur);
 					}
 				}
 				cur[i] = tmp;
